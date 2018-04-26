@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import axios from 'axios'
 
 const ReactHighcharts = require('react-highcharts');
 
@@ -32,10 +33,33 @@ const config = {
 };
 
 
-const AccuracyChart = () => {
-    return (
-        <ReactHighcharts config={config}/>
-    );
+class AccuracyChart extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleRefresh = this.handleRefresh.bind(this);
+    }
+    
+    handleRefresh(e) {
+        e.preventDefault();
+        axios.post('/user', {
+                firstName: 'Fred',
+                lastName: 'Flintstone'
+            })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+    
+    render () {
+        return (
+            <div>
+                <ReactHighcharts config={config}/>
+            </div>
+        );
+    }
 };
 
 export default AccuracyChart;
