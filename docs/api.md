@@ -53,7 +53,7 @@ POST /v0/upload?limit=3
             "accuracy": 90.1
         }
     ],
-    "image_url": "http://localhost/images/:image_resource_id.jpg"
+    "image_url": "http://localhost/v0/images/:image_resource_id.jpg"
 }
 ```
 
@@ -106,8 +106,8 @@ GET /v0/images?limit=10?start=0?sort=uploaded_time?accepted=true
 ```json
 {
     "_links": {
-        "next": "",
-        "self": ""
+        "next": "http://localhost/v0/images?limit=10?start=10?sort=uploaded_time?accepted=true",
+        "self": "http://localhost/v0/images?limit=10?start=0?sort=uploaded_time?accepted=true"
     },
     "error": "error message",
     "class_labels": [
@@ -120,7 +120,7 @@ GET /v0/images?limit=10?start=0?sort=uploaded_time?accepted=true
             "class_id": 1,
             "accuracy": 90.1,
             "accepted": true,
-            "image_url": "http://localhost/images/:image_resource_id.jpg",
+            "image_url": "http://localhost/v0/images/:image_resource_id.jpg",
             "uploaded_at": "2018-04-30T13:59:59Z"
         }
     ]
@@ -132,11 +132,12 @@ GET /v0/images?limit=10?start=0?sort=uploaded_time?accepted=true
 |---------------|------|-------------|
 | `error` | string | Error message |
 | `_links.next` <br>(`optional`) | string | Url of the next page. `null` if it is the last page. |
-| `_links.self` <br>(`optional`) | string | Url of current page. `null` if it is the last page. |
+| `_links.self` <br>(`optional`) | string | Url of current page. |
 | `sort` <br>(`optional`) | string | `class_id` or `accuracy` or `upload_time` + `_asc`. Default sort by `upload_time` in descending order |
 | `accepted` | boolean | Filter. Only return images that are accepted to update model when set to `true`. |
 | `class_labels[]` <br>(`optional`) | array | Label for each class id. If this field is missing, default labels will be used. Length = 11|
 | `class_labels[].label` <br>(`optional`) | string | Name of each class |
+| `limit` | integer | Default is `10` |
 | `results[]` | array | Length <= `limit` |
 | `results[].class_id` | integer | 1 ~ 11 indicating a class id |
 | `results[].accuracy` | float | Accuracy calculated by the model |
@@ -186,7 +187,7 @@ GET /v0/model
                     "class_id": 1,
                     "accuracy": 90.7,
                     "accepted": true,
-                    "image_url": "http://localhost/images/:image_resource_id.jpg",
+                    "image_url": "http://localhost/v0/images/:image_resource_id.jpg",
                     "uploaded_at": "2018-04-30T13:59:59Z"
                 }
             ]
