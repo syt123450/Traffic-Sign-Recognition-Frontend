@@ -33,6 +33,9 @@ const config = {
     title: {
         text: 'Confidence %',
         x: 100
+    },
+    credits: {
+        enabled: false
     }
 };
 
