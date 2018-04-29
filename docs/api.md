@@ -40,7 +40,6 @@ POST /v0/upload?limit=3
 ```json
 {
     "error": "error message",
-    "accepted": true,
     "class_labels": [
         {
             "label": "Stop sign"
