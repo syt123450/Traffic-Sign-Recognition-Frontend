@@ -11,21 +11,42 @@ import { makeData, Logo, Tips } from "../Utils";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 
-const data = [
+const results = [
     {
-        Image: "Image 1",
-        Type: "Stop sign",
-        Confidence: "91"
+        image: "Image 1",
+        type: "Stop sign",
+        confidence: "91",
+        image_url: "./images/stop_sign.png",
     },
     {
-        Image: "Image 2",
-        Type: "Speed limit",
-        Confidence: "8"
+        image: "Image 2",
+        type: "Speed limit",
+        confidence: "8",
+        image_url: "./images/stop_sign.png",
     },
     {
-        Image: "Image 3",
-        Type: "Yield",
-        Confidence: "1"
+        image: "Image 3",
+        type: "Yield",
+        confidence: "1",
+        image_url: "./images/stop_sign.png",
+    },
+];
+
+const newResults = [
+    {
+        image: "Image 1",
+        type: "Stop sign === ",
+        confidence: "91"
+    },
+    {
+        image: "Image 2",
+        type: "Speed limit",
+        confidence: "8"
+    },
+    {
+        image: "Image 3",
+        type: "Yield",
+        confidence: "1"
     },
 ];
 
@@ -33,30 +54,43 @@ class ResultTable extends React.Component {
     constructor() {
         super();
         this.state = {
-            data: makeData()
+            results: results,
         };
+        
+        this.updateResults = this.updateResults.bind(this);
+        setTimeout(this.updateResults, 2000);
+    }
+    
+    /**
+     * Update results of home tab
+     * @param results
+     */
+    updateResults() {
+        this.setState({
+            results: newResults
+        })
     }
     
     render() {
         return (
             <div>
                 <ReactTable
-                    data = { data }
+                    data = { this.state.results }
                     columns = {[
                         {
                             Header: "Image",
-                            accessor: "Image",
+                            accessor: "image",
                             Cell: row => (
                                 <img src={"./images/stop_sign.png"} alt={"result 1"} height={"40"} width={"40"}/>
                             )
                         },
                         {
                             Header: "Type",
-                            accessor: "Type"
+                            accessor: "type"
                         },
                         {
                             Header: "Confidence",
-                            accessor: "Confidence"
+                            accessor: "confidence"
                         }
                     ]}
                     className="-striped -highlight"

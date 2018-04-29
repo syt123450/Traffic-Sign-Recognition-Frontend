@@ -181,22 +181,18 @@ GET /v0/model
     "error": "error message",
     "history": [
         {
-            "model_accuracy": 90.5,
-            "images": [
-                {
-                    "class_id": 1,
-                    "accuracy": 90.7,
-                    "accepted": true,
-                    "image_url": "http://localhost/v0/images/:image_resource_id.jpg",
-                    "uploaded_at": "2018-04-30T13:59:59Z"
-                }
-            ]
+            "class_id": 1,
+            "data": [90.1, 90.2, 90.3]
+        },
+        {
+            "class_id": 11,
+            "data": [90.3, 90.2, 90.1]
         }
     ]
 }
 ```
 
-**Parameters**
+**Parameters (Deprecated) **
 
 | Name | Type | Description |
 |---------------|------|-------------|
