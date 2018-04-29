@@ -10,65 +10,40 @@ import { render } from "react-dom";
 import { makeData, Logo, Tips } from "../Utils";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-
-const results = [
-    {
-        image: "Image 1",
-        type: "Stop sign",
-        confidence: "91",
-        image_url: "./images/stop_sign.png",
-    },
-    {
-        image: "Image 2",
-        type: "Speed limit",
-        confidence: "8",
-        image_url: "./images/stop_sign.png",
-    },
-    {
-        image: "Image 3",
-        type: "Yield",
-        confidence: "1",
-        image_url: "./images/stop_sign.png",
-    },
-];
-
-const newResults = [
-    {
-        image: "Image 1",
-        type: "Stop sign === ",
-        confidence: "91"
-    },
-    {
-        image: "Image 2",
-        type: "Speed limit",
-        confidence: "8"
-    },
-    {
-        image: "Image 3",
-        type: "Yield",
-        confidence: "1"
-    },
-];
+import MockData from './MockData';
 
 class ResultTable extends React.Component {
     constructor() {
         super();
         this.state = {
-            results: results,
+            status: true,
+            results: MockData.resultTableResults,
+            timeout: null
         };
         
         this.updateResults = this.updateResults.bind(this);
-        setTimeout(this.updateResults, 2000);
     }
     
     /**
      * Update results of home tab
      * @param results
      */
-    updateResults() {
+    updateResults(results) {
+        console.log('Update home result table');
         this.setState({
-            results: newResults
+            results: results
         })
+    }
+    
+    componentDidMount() {
+        this.state.timeout = setTimeout(this.updateResults.bind(this, MockData.resultTableNewResults), 2000);
+    }
+    
+    componentWillUnmount() {
+        if (this.state.timeout !== null) {
+            clearTimeout(this.state.timeout);
+            this.state.timeout = null;
+        }
     }
     
     render() {
@@ -79,9 +54,9 @@ class ResultTable extends React.Component {
                     columns = {[
                         {
                             Header: "Image",
-                            accessor: "image",
+                            accessor: "image_url",
                             Cell: row => (
-                                <img src={"./images/stop_sign.png"} alt={"result 1"} height={"40"} width={"40"}/>
+                                <img src={ row.value } alt={"result 1"} height={"40"} width={"40"}/>
                             )
                         },
                         {

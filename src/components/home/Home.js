@@ -3,6 +3,7 @@ import { render } from "react-dom";
 import { Grid, Row, Col } from 'react-bootstrap/lib';
 import ResultTable from './ResultTable';
 import ResultChart from './ResultChart';
+import UploadForm from './UploadForm';
 
 class Home extends React.Component {
     constructor() {
@@ -14,7 +15,7 @@ class Home extends React.Component {
             <Grid>
                 <Row className="show-grid">
                     <Col md={1}>
-                        {"col 1"}
+                        <UploadForm />
                     </Col>
                     <Col md={6}>
                         <ResultTable />

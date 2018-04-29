@@ -10,62 +10,62 @@ import { render } from "react-dom";
 import { makeData, Logo, Tips } from "../Utils";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import MockData from './MockData';
 
-const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-
-const data = [
-    {
-        Image: "Image 1",
-        Type: "Stop sign",
-        Confidence: "91",
-        UploadedOn: (new Date()).toLocaleString('en-US', options),
-    },
-    {
-        Image: "Image 2",
-        Type: "Speed limit",
-        Confidence: "8",
-        UploadedOn: (new Date()).toLocaleString('en-US', options),
-    },
-    {
-        Image: "Image 3",
-        Type: "Yield",
-        Confidence: "1",
-        UploadedOn: (new Date()).toLocaleString('en-US', options),
-    },
-];
 
 class ResultTable extends React.Component {
     constructor() {
         super();
         this.state = {
-            data: makeData()
+            data: MockData.data,
+            timeout: null
         };
+
+        this.updateData = this.updateData.bind(this);
+    }
+
+    updateData(newData) {
+        console.log('Update accepted table');
+        this.setState({
+            data: newData
+        })
+    }
+    
+    componentDidMount() {
+        this.state.timeout = setTimeout(this.updateData.bind(this, MockData.newData), 2000);
+    }
+    
+    componentWillUnmount() {
+        if (this.state.timeout !== null) {
+            clearTimeout(this.state.timeout);
+            this.state.timeout = null;
+        }
     }
     
     render() {
         return (
             <div>
                 <ReactTable
-                    data = { data }
+                    data = { this.state.data }
                     columns = {[
                         {
                             Header: "Image",
-                            accessor: "Image",
+                            accessor: "image_url",
                             Cell: row => (
-                                <img src={"./images/stop_sign.png"} alt={"result 1"} height={"40"} width={"40"}/>
+                                <img src={ row.value } alt={"result 1"} height={"40"} width={"40"}/>
                             ),
                         },
                         {
                             Header: "Type",
-                            accessor: "Type",
+                            accessor: "type",
                         },
                         {
-                            Header: "Confidence",
-                            accessor: "Confidence",
+                            Header: "confidence",
+                            accessor: "confidence",
                         },
                         {
                             Header: "Uploaded on",
-                            accessor: "UploadedOn",
+                            accessor: "uploadedOn",
                         }
                     ]}
                     className="-striped -highlight"
