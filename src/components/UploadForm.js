@@ -9,7 +9,7 @@ class UploadForm extends Component {
 
 		var formData = new FormData($("#form")[0]);
 		$.ajax({
-			url: '/upload' ,
+			url: '/v0/upload' ,
 			type: 'POST',
 			enctype: 'multipart/form-data',
 			data: formData,
@@ -21,7 +21,7 @@ class UploadForm extends Component {
 			}
 		});
 	}
-
+npm
 	render() {
 		return (
 			<div>
