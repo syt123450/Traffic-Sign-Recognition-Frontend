@@ -45,39 +45,16 @@ import axios from 'axios';
 import { Button, Glyphicon } from 'react-bootstrap';
 
 class UploadForm extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.fileInput = null;
         this.onUploadClick = this.onUploadClick.bind(this);
+        // this.onFileChange = props.onFileSelectedHandler;
     }
     
     onUploadClick() {
+        console.log("......");
         this.fileInput.click();
-    }
-    
-    onInputChange(event) {
-        console.log('&&&&&');
-        let formData = new FormData();
-        formData.append('file', event.target.files[0]);
-        
-        axios({
-            url: 'http://localhost:8080/upload',
-            method: 'post',
-            data: formData,
-            headers: {
-                dataType: 'text',
-                enctype: 'multipart/form-data',
-                contentType: false,
-                processData: false,
-            }})
-            .then(response => {
-                console.log('upload form ======', response);
-                // event.target.value = "";
-                // event.target.files[0] = null;
-            })
-            .catch(error => {
-                console.log('error ======', error);
-            });
     }
     
     onInputClick(event) {
@@ -96,7 +73,7 @@ class UploadForm extends React.Component {
                         
                         <input name={'file'} ref={input => this.fileInput = input}
                                style={{display: 'none'}} type={"file"} accept={'image/*'}
-                               onChange={ this.onInputChange }
+                               onChange={ this.props.onFileSelectedHandler }
                                onClick={ this.onInputClick }
                         />
                     </form>

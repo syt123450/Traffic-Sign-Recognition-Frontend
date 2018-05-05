@@ -9,13 +9,14 @@ import ReactHighcharts from 'react-highcharts';
 import MockData from './MockData';
 
 class ResultChart extends React.Component {
-    constructor() {
-        super()
+    constructor(props) {
+        console.log('===== result char constructor');
+        super(props);
     }
     
     render() {
         return (
-            <ReactHighcharts config={ MockData.resultChartConfig } />
+            <ReactHighcharts config={ this.props.chartConfig } />
         )
     }
 }

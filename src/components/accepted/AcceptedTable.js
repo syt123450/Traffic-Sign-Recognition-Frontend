@@ -10,6 +10,8 @@ import { render } from "react-dom";
 import { makeData, Logo, Tips } from "../Utils";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import { Button, Glyphicon } from 'react-bootstrap';
+import axios from 'axios';
 import MockData from './MockData';
 
 
@@ -21,58 +23,87 @@ class ResultTable extends React.Component {
             timeout: null
         };
 
-        this.updateData = this.updateData.bind(this);
+        this.updateTableData = this.updateTableData.bind(this);
+        this.onClickRefresh = this.onClickRefresh.bind(this);
     }
 
-    updateData(newData) {
+    updateTableData(newData) {
         console.log('Update accepted table');
         this.setState({
             data: newData
         })
     }
-    
+
     componentDidMount() {
-        this.state.timeout = setTimeout(this.updateData.bind(this, MockData.newData), 2000);
+        this.fetchDataAndUpdateTable();
     }
-    
+
     componentWillUnmount() {
         if (this.state.timeout !== null) {
             clearTimeout(this.state.timeout);
             this.state.timeout = null;
+            
         }
     }
-    
+
+    onClickRefresh() {
+        this.fetchDataAndUpdateTable();
+    }
+
+    fetchDataAndUpdateTable() {
+        axios({
+                url: 'http://localhost:8080/v0/record',
+                method: 'get'
+            })
+            .then(response => {
+                console.log('accepted images ======', response.data.records);
+                // event.target.value = "";
+                // event.target.files[0] = null;
+                this.updateTableData(response.data.records);
+            })
+            .catch(error => {
+                console.log('error ======', error);
+            });
+    }
+
     render() {
         return (
+
             <div>
-                <ReactTable
-                    data = { this.state.data }
-                    columns = {[
-                        {
-                            Header: "Image",
-                            accessor: "image_url",
-                            Cell: row => (
-                                <img src={ row.value } alt={"result 1"} height={"40"} width={"40"}/>
-                            ),
-                        },
-                        {
-                            Header: "Type",
-                            accessor: "type",
-                        },
-                        {
-                            Header: "confidence",
-                            accessor: "confidence",
-                        },
-                        {
-                            Header: "Uploaded on",
-                            accessor: "uploadedOn",
-                        }
-                    ]}
-                    className="-striped -highlight"
-                    defaultPageSize={10}
-                />
-                <Tips />
-                <Logo />
+                <div>
+                    <ReactTable
+                        data = { this.state.data }
+                        columns = {[
+                            {
+                                Header: "Image",
+                                accessor: "imageURL",
+                                Cell: row => (
+                                    <img src={ row.value } alt={"result 1"} height={"40"} width={"40"}/>
+                                ),
+                            },
+                            {
+                                Header: "Type",
+                                accessor: "classname",
+                            },
+                            {
+                                Header: "Accuracy",
+                                accessor: "accuracy",
+                            },
+                            {
+                                Header: "Uploaded on",
+                                accessor: "time",
+                            }
+                        ]}
+                        className="-striped -highlight"
+                        defaultPageSize={10}
+                    />
+                    <Tips />
+                </div>
+                <div>
+                    <Button onClick={ this.onClickRefresh }>
+                        <Glyphicon glyph={"refresh"}/>
+                    </Button>
+                </div>
             </div>
         );
     }

@@ -12,9 +12,11 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import MockData from './MockData';
 
+
 class ResultTable extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        console.log('*****');
+        super(props);
         this.state = {
             status: true,
             results: MockData.resultTableResults,
@@ -36,7 +38,7 @@ class ResultTable extends React.Component {
     }
     
     componentDidMount() {
-        this.state.timeout = setTimeout(this.updateResults.bind(this, MockData.resultTableNewResults), 2000);
+        // this.state.timeout = setTimeout(this.updateResults.bind(this, MockData.resultTableNewResults), 2000);
     }
     
     componentWillUnmount() {
@@ -50,22 +52,22 @@ class ResultTable extends React.Component {
         return (
             <div>
                 <ReactTable
-                    data = { this.state.results }
+                    data = { this.props.tableData }
                     columns = {[
                         {
                             Header: "Image",
-                            accessor: "image_url",
+                            accessor: "imageURL",
                             Cell: row => (
                                 <img src={ row.value } alt={"result 1"} height={"40"} width={"40"}/>
                             )
                         },
                         {
                             Header: "Type",
-                            accessor: "type"
+                            accessor: "classID"
                         },
                         {
-                            Header: "Confidence",
-                            accessor: "confidence"
+                            Header: "Accuracy",
+                            accessor: "accuracy"
                         }
                     ]}
                     className="-striped -highlight"
