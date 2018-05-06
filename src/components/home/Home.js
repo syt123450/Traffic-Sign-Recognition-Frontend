@@ -4,17 +4,10 @@ import { Grid, Row, Col } from 'react-bootstrap/lib';
 import ResultTable from './ResultTable';
 import ResultChart from './ResultChart';
 import UploadForm from './UploadForm';
-import axios from 'axios';
-import MockData from './MockData';
-import Constants from '../constants/Constants';
 
 class Home extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            chartConfig: MockData.resultChartConfig,
-            tableData: [],
-        }
+    constructor(props) {
+        super(props);
     }
 
     render () {
@@ -23,16 +16,16 @@ class Home extends React.Component {
                 <Row className="show-grid">
                     <Col md={1}>
                         <UploadForm
-                            onFileSelectedHandler={this.onFileSelected.bind(this)}
+                            onFileSelectedHandler={ this.props.onFileSelectedHandler }
                         />
                     </Col>
-                    <Col md={6}>
-                        <ResultTable tableData={this.state.tableData}/>
-                    </Col>
                     <Col md={5}>
+                        <ResultTable tableData={ this.props.resultTableData }/>
+                    </Col>
+                    <Col md={6}>
                         <ResultChart
-                            chartConfig={this.state.chartConfig}
-                            onUploadWindowCloseHandler={this.onUploadWindowClose.bind(this)}
+                            resultChartConfig={ this.props.resultChartConfig }
+                            onUploadWindowCloseHandler={ this.onUploadWindowClose.bind(this) }
                             />
                     </Col>
                 </Row>
@@ -40,46 +33,9 @@ class Home extends React.Component {
         )
     }
 
-    onFileSelected(event) {
-        console.log('&&&&&');
-        let formData = new FormData();
-        formData.append('file', event.target.files[0]);
-
-        axios({
-            url: 'http://localhost:8080/v0/upload',
-            method: 'post',
-            data: formData,
-            headers: {
-                dataType: 'text',
-                enctype: 'multipart/form-data',
-                contentType: false,
-                processData: false,
-            }})
-            .then(response => {
-                console.log('classification results ====', response.data.results);
-                this.getNewChartConfig(response.data.results);
-
-                this.setState({
-                    tableData: response.data.results,
-                    chartConfig: MockData.resultChartConfig,
-                })
-            })
-            .catch(error => {
-                console.log('Fail to upload data', error);
-            });
-    }
-
     onUploadWindowClose() {
 
     }
-
-    getNewChartConfig(results) {
-        let newData = results.map(result => ({
-            name: Constants.imageLabels[result.classID],
-            y: result.accuracy * 100
-        }));
-        MockData.resultChartConfig.series[0].data = newData;
-    }
 }
 
-export default Home
+export default Home;

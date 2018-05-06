@@ -13,7 +13,7 @@ import "react-table/react-table.css";
 import { Button, Glyphicon } from 'react-bootstrap';
 import axios from 'axios';
 import MockData from './MockData';
-
+import Constants from '../constants/Constants';
 
 class ResultTable extends React.Component {
     constructor() {
@@ -25,13 +25,6 @@ class ResultTable extends React.Component {
 
         this.updateTableData = this.updateTableData.bind(this);
         this.onClickRefresh = this.onClickRefresh.bind(this);
-    }
-
-    updateTableData(newData) {
-        console.log('Update accepted table');
-        this.setState({
-            data: newData
-        })
     }
 
     componentDidMount() {
@@ -56,12 +49,19 @@ class ResultTable extends React.Component {
                 method: 'get'
             })
             .then(response => {
-                console.log('accepted images ======', response.data.records);
                 this.updateTableData(response.data.records);
             })
             .catch(error => {
                 console.log('error ======', error);
             });
+    }
+
+    updateTableData(newData) {
+        console.log('Update accepted table');
+        console.log('accepted images ======', newData);
+        this.setState({
+            data: newData
+        })
     }
 
     render() {
@@ -82,15 +82,28 @@ class ResultTable extends React.Component {
                             {
                                 Header: "Type",
                                 accessor: "classname",
+                                Cell: row => (
+                                    <div>{ Constants.imageLabels[row.value] }</div>
+                                ),
                             },
                             {
-                                Header: "Accuracy",
+                                Header: "Accuracy %",
                                 accessor: "accuracy",
+                                Cell: row => (
+                                    <div>{ (row.value * 100).toString() }</div>
+                                ),
                             },
                             {
                                 Header: "Uploaded on",
                                 accessor: "time",
-                            }
+                            },
+                            // {
+                            //     Header: "Acceptedd",
+                            //     accessor: "time",
+                            //     Cell: row => {
+                            //         <div>{ 'false' }</div>
+                            //     }
+                            // },
                         ]}
                         className="-striped -highlight"
                         defaultPageSize={10}
@@ -107,4 +120,4 @@ class ResultTable extends React.Component {
     }
 }
 
-export default ResultTable
+export default ResultTable;

@@ -77,7 +77,7 @@ class ResultTable extends React.Component {
                         }
                     ]}
                     className="-striped -highlight"
-                    defaultPageSize={3}
+                    defaultPageSize={10}
                 />
             </div>
         );
