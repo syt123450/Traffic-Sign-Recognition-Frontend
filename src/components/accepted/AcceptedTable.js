@@ -42,7 +42,7 @@ class ResultTable extends React.Component {
         if (this.state.timeout !== null) {
             clearTimeout(this.state.timeout);
             this.state.timeout = null;
-            
+
         }
     }
 
@@ -57,8 +57,6 @@ class ResultTable extends React.Component {
             })
             .then(response => {
                 console.log('accepted images ======', response.data.records);
-                // event.target.value = "";
-                // event.target.files[0] = null;
                 this.updateTableData(response.data.records);
             })
             .catch(error => {
@@ -78,7 +76,7 @@ class ResultTable extends React.Component {
                                 Header: "Image",
                                 accessor: "imageURL",
                                 Cell: row => (
-                                    <img src={ row.value } alt={"result 1"} height={"40"} width={"40"}/>
+                                    <img src={ 'http://' + row.value } alt={"result 1"} height={"40"} width={"40"}/>
                                 ),
                             },
                             {

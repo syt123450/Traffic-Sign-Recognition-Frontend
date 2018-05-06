@@ -11,7 +11,7 @@ import { makeData, Logo, Tips } from "../Utils";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import MockData from './MockData';
-
+import Constants from '../constants/Constants';
 
 class ResultTable extends React.Component {
     constructor(props) {
@@ -22,10 +22,10 @@ class ResultTable extends React.Component {
             results: MockData.resultTableResults,
             timeout: null
         };
-        
+
         this.updateResults = this.updateResults.bind(this);
     }
-    
+
     /**
      * Update results of home tab
      * @param results
@@ -36,18 +36,18 @@ class ResultTable extends React.Component {
             results: results
         })
     }
-    
+
     componentDidMount() {
         // this.state.timeout = setTimeout(this.updateResults.bind(this, MockData.resultTableNewResults), 2000);
     }
-    
+
     componentWillUnmount() {
         if (this.state.timeout !== null) {
             clearTimeout(this.state.timeout);
             this.state.timeout = null;
         }
     }
-    
+
     render() {
         return (
             <div>
@@ -56,25 +56,29 @@ class ResultTable extends React.Component {
                     columns = {[
                         {
                             Header: "Image",
-                            accessor: "imageURL",
+                            accessor: "classID",
                             Cell: row => (
-                                <img src={ row.value } alt={"result 1"} height={"40"} width={"40"}/>
+                                <img src={ 'http://localhost:8080/' + row.value.toString().padStart(2, '0') + '.png' } alt={"result 1"} height={"40"} width={"40"}/>
                             )
                         },
                         {
                             Header: "Type",
-                            accessor: "classID"
+                            accessor: "classID",
+                            Cell: row => (
+                                <div>{ Constants.imageLabels[row.value] }</div>
+                            )
                         },
                         {
-                            Header: "Accuracy",
-                            accessor: "accuracy"
+                            Header: "Accuracy %",
+                            accessor: "accuracy",
+                            Cell: row => (
+                                <div>{ row.value * 100 }</div>
+                            )
                         }
                     ]}
                     className="-striped -highlight"
                     defaultPageSize={3}
                 />
-                <Tips />
-                <Logo />
             </div>
         );
     }

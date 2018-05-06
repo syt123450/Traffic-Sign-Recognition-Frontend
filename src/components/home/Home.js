@@ -6,17 +6,17 @@ import ResultChart from './ResultChart';
 import UploadForm from './UploadForm';
 import axios from 'axios';
 import MockData from './MockData';
+import Constants from '../constants/Constants';
 
 class Home extends React.Component {
     constructor() {
-        console.log('****** home constructor');
         super();
         this.state = {
             chartConfig: MockData.resultChartConfig,
             tableData: [],
         }
     }
-    
+
     render () {
         return (
             <Grid>
@@ -39,12 +39,12 @@ class Home extends React.Component {
             </Grid>
         )
     }
-    
+
     onFileSelected(event) {
         console.log('&&&&&');
         let formData = new FormData();
         formData.append('file', event.target.files[0]);
-    
+
         axios({
             url: 'http://localhost:8080/v0/upload',
             method: 'post',
@@ -56,25 +56,26 @@ class Home extends React.Component {
                 processData: false,
             }})
             .then(response => {
-                console.log('====', response.data.results);
+                console.log('classification results ====', response.data.results);
                 this.getNewChartConfig(response.data.results);
-                
+
                 this.setState({
-                    tableData: response.data.results
+                    tableData: response.data.results,
+                    chartConfig: MockData.resultChartConfig,
                 })
             })
             .catch(error => {
                 console.log('Fail to upload data', error);
             });
     }
-    
+
     onUploadWindowClose() {
-    
+
     }
-    
+
     getNewChartConfig(results) {
         let newData = results.map(result => ({
-            name: result.classID,
+            name: Constants.imageLabels[result.classID],
             y: result.accuracy * 100
         }));
         MockData.resultChartConfig.series[0].data = newData;

@@ -12,8 +12,11 @@ class ResultChart extends React.Component {
     constructor(props) {
         console.log('===== result char constructor');
         super(props);
+        // this.state = {
+        //     config:
+        // };
     }
-    
+
     render() {
         return (
             <ReactHighcharts config={ this.props.chartConfig } />

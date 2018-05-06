@@ -12,17 +12,50 @@ export default () => (
             <Tab>Accepted</Tab>
             <Tab>Model</Tab>
         </TabList>
-        
+
         <TabPanel>
             <Home />
         </TabPanel>
-        
+
         <TabPanel>
             <AcceptedTable />
         </TabPanel>
-        
+
         <TabPanel>
             <AccuracyChart />
         </TabPanel>
     </Tabs>
 );
+// 
+// class MyTabs extends React.Component {
+//     constructor() {
+//         super();
+//         this.state = {};
+//     }
+//
+//     render() {
+//         return (
+//             <Tabs className={"body-container"}>
+//                 <TabList>
+//                     <Tab>Home</Tab>
+//                     <Tab>Accepted</Tab>
+//                     <Tab>Model</Tab>
+//                 </TabList>
+//
+//                 <TabPanel>
+//                     <Home />
+//                 </TabPanel>
+//
+//                 <TabPanel>
+//                     <AcceptedTable />
+//                 </TabPanel>
+//
+//                 <TabPanel>
+//                     <AccuracyChart />
+//                 </TabPanel>
+//             </Tabs>
+//         )
+//     }
+// }
+//
+// export default MyTabs;
