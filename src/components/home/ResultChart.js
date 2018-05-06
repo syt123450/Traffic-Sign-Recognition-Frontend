@@ -10,7 +10,6 @@ import MockData from './MockData';
 
 class ResultChart extends React.Component {
     constructor(props) {
-        console.log('===== result char constructor');
         super(props);
     }
 

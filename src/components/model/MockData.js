@@ -19,6 +19,9 @@ const last5EpochsConfig = {
 };
 
 const modelHistoryConfig = {
+    chart: {
+        zoomType: 'xy'
+    },
     title: {
         text: 'Modle History'
     },

@@ -57,8 +57,8 @@ class ResultTable extends React.Component {
     }
 
     updateTableData(newData) {
-        console.log('Update accepted table');
-        console.log('accepted images ======', newData);
+        // console.log('Update accepted table');
+        // console.log('accepted images ======', newData);
         this.setState({
             data: newData
         })
@@ -71,12 +71,13 @@ class ResultTable extends React.Component {
                 <div>
                     <ReactTable
                         data = { this.state.data }
+                        trStyleCallback={ rowInfo => ( {color: rowInfo.row.accept > 0.8 ? 'green' : 'red'} ) }
                         columns = {[
                             {
                                 Header: "Image",
                                 accessor: "imageURL",
                                 Cell: row => (
-                                    <img src={ 'http://' + row.value } alt={"result 1"} height={"40"} width={"40"}/>
+                                    <img src={ row.value } alt={"result 1"} height={"40"} width={"40"}/>
                                 ),
                             },
                             {
@@ -90,20 +91,22 @@ class ResultTable extends React.Component {
                                 Header: "Accuracy %",
                                 accessor: "accuracy",
                                 Cell: row => (
-                                    <div>{ (row.value * 100).toString() }</div>
+                                    <div>{ (row.value * 100).toFixed(2).toString() }</div>
                                 ),
                             },
                             {
                                 Header: "Uploaded on",
                                 accessor: "time",
                             },
-                            // {
-                            //     Header: "Acceptedd",
-                            //     accessor: "time",
-                            //     Cell: row => {
-                            //         <div>{ 'false' }</div>
-                            //     }
-                            // },
+                            {
+                                Header: "Accept",
+                                accessor: "accept",
+                                Cell: row => (
+                                    <div style={{backgroundColor: row.value ? '#9BC1B2' : '#ED5A6D', textAlign:'center',}}>
+                                        { row.value.toString() }
+                                    </div>
+                                )
+                            },
                         ]}
                         className="-striped -highlight"
                         defaultPageSize={10}

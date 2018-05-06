@@ -46,19 +46,25 @@ class AccuracyChart extends React.Component {
             })
             .then(response => {
                 // Update chart for last 5 epochs
+                // console.log('=======', response.data);
                 MockData.last5EpochsConfig.series = response.data.comboDataBean.classesPrecises.map((epochData, index) => {
                     return {
                         type: 'column',
                         name: 'epoch ' + index,
-                        data: Object.values(epochData).slice(1),
+                        data: Object.values(epochData).slice(1).map(data => {
+                            console.log((data * 100).toFixed(2));
+                            return parseFloat((data * 100).toFixed(2));
+                        }),
                     };
                 });
 
                 MockData.last5EpochsConfig.series.push(
                     {
                         type: 'spline',
-                        name: 'Average',
-                        data: response.data.comboDataBean.classesPrecises.averages,
+                        name: 'Class Average',
+                        data: response.data.comboDataBean.averages.map(data => {
+                            return parseFloat((data * 100).toFixed(2));
+                        }),
                         marker:
                             {
                                 lineWidth: 2,
@@ -71,11 +77,11 @@ class AccuracyChart extends React.Component {
                 // update chart of model history
                 MockData.modelHistoryConfig.series[0] = {
                     data: response.data.lineDataBean.averagePrecises.map(epochData => {
-                        return epochData['precise'];
+                        return parseFloat(((epochData['precise'] * 100).toFixed(2)));
                     }),
                 };
 
-                console.log('modelHistoryConfig ======', MockData.modelHistoryConfig);
+                // console.log('modelHistoryConfig ======', MockData.modelHistoryConfig);
 
                 this.setState({
                     last5EpochsConfig: MockData.last5EpochsConfig,

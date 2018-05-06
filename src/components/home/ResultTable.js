@@ -15,7 +15,6 @@ import Constants from '../constants/Constants';
 
 class ResultTable extends React.Component {
     constructor(props) {
-        console.log('*****');
         super(props);
         this.state = {
             status: true,
@@ -58,7 +57,7 @@ class ResultTable extends React.Component {
                             Header: "Image",
                             accessor: "classID",
                             Cell: row => (
-                                <img src={ 'http://localhost:8080/' + row.value.toString().padStart(2, '0') + '.png' } alt={"result 1"} height={"40"} width={"40"}/>
+                                <img src={ 'images/' + row.value.toString().padStart(2, '0') + '.png' } alt={"result 1"} height={"40"} width={"40"}/>
                             )
                         },
                         {
@@ -72,7 +71,7 @@ class ResultTable extends React.Component {
                             Header: "Accuracy %",
                             accessor: "accuracy",
                             Cell: row => (
-                                <div>{ row.value * 100 }</div>
+                                <div>{ (row.value * 100).toFixed(2) }</div>
                             )
                         }
                     ]}
